@@ -1,8 +1,15 @@
 import React from "react";
 import { render } from "react-dom";
-import { ApolloClient, ApolloProvider, InMemoryCache, ApolloLink , useQuery, gql, makeVar } from "@apollo/client";
+import { ApolloClient, ApolloProvider, InMemoryCache, useQuery, gql, makeVar } from "@apollo/client";
 // import Panel from './components/Panel';
 import { Explorer } from './Explorer/Explorer';
+
+export enum ColorThemes {
+  Light = 'light',
+  Dark = 'dark'
+}
+
+type ColorTheme = ColorThemes;
 
 const cache = new InMemoryCache({
   typePolicies: {
@@ -16,7 +23,13 @@ const cache = new InMemoryCache({
         },
         cache() {
           return cacheVar();
-        }
+        },
+        colorTheme() {
+          return colorTheme();
+        },
+        graphiQLQuery() {
+          return graphiQLQuery();
+        },
       }
     }
   }
@@ -25,6 +38,8 @@ const cache = new InMemoryCache({
 const queriesVar = makeVar(null);
 const mutationsVar = makeVar(null);
 const cacheVar = makeVar(null);
+export const colorTheme = makeVar<ColorTheme>(ColorThemes.Light);
+export const graphiQLQuery = makeVar<string>('');
 
 const client = new ApolloClient({
   cache,
